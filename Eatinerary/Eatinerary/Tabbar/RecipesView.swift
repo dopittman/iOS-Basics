@@ -15,15 +15,13 @@ struct RecipesView: View {
                     recipeName: "Hamburger Helper",
                     timeText: "1h 45m",
                     difficultyText: "Hard",
-                    isFavorite: true,
-                    difficultyColor: .red
+                    isFavorite: true
                 )
                 RecipeCardView(
                     recipeName: "Hamburger Helper",
                     timeText: "1h 45m",
                     difficultyText: "Hard",
-                    isFavorite: false,
-                    difficultyColor: .red
+                    isFavorite: false
                 )
                 
         }

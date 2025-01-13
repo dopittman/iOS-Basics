@@ -14,7 +14,6 @@ struct RecipeCardView: View {
     var difficultyText: String
     var isFavorite: Bool
     var difficultyRating: Int?
-    var difficultyColor: Color
 
     @State private var ratingState: Int = 0
 
@@ -22,33 +21,36 @@ struct RecipeCardView: View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top){
-                    
                     // Image Section
                     if let imageName = imageName {
-                        Image(systemName: imageName)
+                        Image(imageName)
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 80, height: 80)
-                            .cornerRadius(10)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 80, height: 80, alignment: .center)                            .cornerRadius(10)
                             .clipped()
+                            .padding(.trailing, 4)
                     } else {
                         Image(systemName: "photo.badge.plus")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
-                            .cornerRadius(10)
+                            .frame(width: 80, height: 80, alignment: .center)                            .cornerRadius(10)
                             .clipped()
                     }
                     
                     // Recipe Title and stats
-                    VStack(alignment: .leading) {
-                        HStack{
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(){
                             Text(recipeName)
                                 .fontWeight(.bold)
+                                .multilineTextAlignment(.leading)
                                 .lineLimit(2) // Restrict the text to one line
                                 .truncationMode(.tail) // Truncate at the end with an ellipsis
-                                .frame(width: 200) // Set a width for the text view to control truncation
+                                .padding(.trailing, 40) // Add padding to avoid overlapping the heart
+
+
                         }
+
+
                         HStack(spacing: 4.0) {
                             
                             // Time Section
@@ -62,11 +64,8 @@ struct RecipeCardView: View {
                             // Difficulty Section
                             HStack( spacing: 4.0){
                                 Image(systemName: "bolt.fill")
-                                if let difficultyRating = difficultyRating {
-                                    ShowDifficultyRating(rating: .constant(difficultyRating))
-                                } else {
-                                    ShowDifficultyRating(rating: $ratingState)
-                                }
+                                ShowDifficultyRating(rating: .constant(difficultyRating ?? 0)) // Default to 0 if nil
+
                             }
                         }
                     }
@@ -88,45 +87,36 @@ struct RecipeCardView: View {
                 )
                 HStack(alignment: .center){
                     Image(systemName: "tag.fill")
-                    Text(difficultyText)
+                    Text("Vegetarian")
                         .fontWeight(.medium)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.black)
                         .background(
                             Capsule()
-                                .fill(.black) // Fill the capsule with a color
+                                .fill(Color("GreenAccent")) // Fill the capsule with a color
                         )
                     
 
-                    Text(difficultyText)
+                    Text("Dinner")
                         .fontWeight(.medium)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
                         .foregroundStyle(.black)
                         .background(
                             Capsule()
-                                .fill(Color(red: 0.833, green: 0.868, blue: 0.759)) // Fill the capsule with a color
+                                .fill(Color("GreenAccent")) // Fill the capsule with a color
                         )
-                    Text(difficultyText)
+                    Text("Healthy")
                         .fontWeight(.medium)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
                         .foregroundStyle(.black)
                         .background(
                             Capsule()
-                                .fill(Color(red: 0.909, green: 0.743, blue: 0.685)) // Fill the capsule with a color
+                                .fill(Color("GreenAccent")) // Fill the capsule with a color
                         )
-                    Text(difficultyText)
-                        .fontWeight(.medium)
-                        .foregroundColor(.black)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 12)
-                        .foregroundStyle(.black)
-                        .background(
-                            Capsule()
-                                .fill(Color(red: 0.67, green: 0.812, blue: 0.732)) // Fill the capsule with a color
-                        )
+
                 }
                 
             }
@@ -138,7 +128,7 @@ struct RecipeCardView: View {
 
         }
         .padding()
-        .background(Color(red: 0.986, green: 0.976, blue: 0.955))
+        .background(Color("CardBackground"))
         .cornerRadius(15)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 4)
         .padding([.horizontal, .bottom])
@@ -150,31 +140,36 @@ struct RecipeCardContentView: View {
         ScrollView {
             VStack {
                 RecipeCardView(
-                    imageName: "heart.fill",
+                    imageName: "TempSpaghetti",
                     recipeName: "Spaghetti and meatballs",
                     timeText: "15 mins",
                     difficultyText: "Low",
                     isFavorite: true,
-                    difficultyRating: 3,
-                    difficultyColor: .green
-                    
+                    difficultyRating: 1
                 )
                 
                 RecipeCardView(
+                    imageName: "TempHH2",
                     recipeName: "Hamburger Helper",
-                    timeText: "1h 45m",
+                    timeText: "1h 15m",
                     difficultyText: "High",
                     isFavorite: false,
-                    difficultyRating: 5,
-                    difficultyColor: .red
+                    difficultyRating: 3
+                )
+                RecipeCardView(
+                    imageName: "TempHamburgerHelper",
+                    recipeName: "Hamburger Helper and cheese",
+                    timeText: "1h 45m",
+                    difficultyText: "High",
+                    isFavorite: true,
+                    difficultyRating: 5
                 )
                 RecipeCardView(
                     recipeName: "Hamburger Helper and cheese",
                     timeText: "1h 45m",
                     difficultyText: "High",
                     isFavorite: true,
-                    difficultyRating: 5,
-                    difficultyColor: .red
+                    difficultyRating: 2
                 )
             }
         }

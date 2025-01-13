@@ -9,17 +9,22 @@ import SwiftUI
 
 struct ShowDifficultyRating: View {
     @Binding var rating: Int
-
+    
+    
     init(rating: Binding<Int>) {
         self._rating = rating
     }
 
     var body: some View {
-        HStack(spacing: 4) { // Adjust spacing as needed
-            ForEach(1...rating, id: \.self) { index in
-                Image(systemName: "circle.fill")
-                    .foregroundStyle(color(for: index))
+        if rating > 0 {
+            HStack(spacing: 4) { // Adjust spacing as needed
+                ForEach(1...rating, id: \.self) { index in
+                    Image(systemName: "circle.fill")
+                        .foregroundStyle(color(for: index))
+                }
             }
+        } else {
+            EmptyView() // Returns no view when rating is 0
         }
     }
     
@@ -32,3 +37,24 @@ struct ShowDifficultyRating: View {
     
     
 }
+
+struct ShowDifficultyRatingontentView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment:.leading) {
+                ShowDifficultyRating(rating: .constant(1))
+                ShowDifficultyRating(rating: .constant(2))
+                ShowDifficultyRating(rating: .constant(3))
+                ShowDifficultyRating(rating: .constant(4))
+                ShowDifficultyRating(rating: .constant(5))
+            }
+        }
+    }
+}
+
+struct ShowDifficultyRating_Previews: PreviewProvider {
+    static var previews: some View {
+        ShowDifficultyRatingontentView()
+    }
+}
+
