@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
-    @State private var tabSelection: Int = 0
+struct MainView: View {
 
     var body: some View {
         TabView {
@@ -17,9 +16,7 @@ struct SwiftUIView: View {
                     Image(systemName: "fork.knife.circle")
                     Text("Recipes")
                 }
-                .onAppear {
-                    tabSelection = 0
-                }
+
             
             SearchView()
                 .tabItem {
@@ -36,7 +33,7 @@ struct SwiftUIView: View {
         .onAppear{
             UITabBar.appearance().barTintColor = .white
         }
-        .accentColor(.blue) // Set the accent color for the selected tab
+        .accentColor(.black) // Set the accent color for the selected tab
     }
 }
 
@@ -62,6 +59,6 @@ struct ProfileView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SwiftUIView()
+        MainView()
     }
 }
