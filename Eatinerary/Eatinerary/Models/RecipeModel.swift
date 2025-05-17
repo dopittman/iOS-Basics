@@ -114,7 +114,7 @@ struct Recipe: Codable, Identifiable {
     }
     
     var imageNameOrDefault: String {
-        return image ?? "defaultRecipeImage"
+        return image ?? "DefaultRecipeImage"
     }
 }
 
