@@ -111,7 +111,6 @@
     "Nutrition": ["Calories: 150", "Protein: 6g", "Carbs: 18g", "Fat: 6g"],
     "Tags": ["Healthy", "Vegetarian", "Quick"],
     "Effort level": "Easy",
-    "Image": "stir_fry.jpg",
     "isFavorite": false
   },
   {
@@ -142,7 +141,6 @@
     "Nutrition": ["Calories: 450", "Protein: 40g", "Carbs: 12g", "Fat: 18g"],
     "Tags": ["French", "Comfort Food", "Dinner"],
     "Effort level": "Hard",
-    "Image": "beef_bourguignon.jpg",
     "isFavorite": true
   },
   {
@@ -169,7 +167,6 @@
     "Nutrition": ["Calories: 250", "Protein: 15g", "Carbs: 5g", "Fat: 18g"],
     "Tags": ["Italian", "Vegetarian", "Quick"],
     "Effort level": "Easy",
-    "Image": "caprese_salad.jpg",
     "isFavorite": false
   },
   {
@@ -199,7 +196,6 @@
     "Nutrition": ["Calories: 150", "Protein: 2g", "Carbs: 20g", "Fat: 8g"],
     "Tags": ["Dessert", "Snack", "Baking"],
     "Effort level": "Medium",
-    "Image": "chocolate_chip_cookies.jpg",
     "isFavorite": true
   }
 ]
