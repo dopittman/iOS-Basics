@@ -29,9 +29,42 @@
 		F3C2E8D82D31C6AB00B2CE93 /* EatineraryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EatineraryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F3C2E9192D38A93000B2CE93 /* Exceptions for "Eatinerary" folder in "EatineraryTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/RecipeData.swift,
+				Models/IngredientModel.swift,
+				Models/RecipeModel.swift,
+				Models/StepModel.swift,
+				Views/DetailedView/Components/IngredientsListView.swift,
+				Views/DetailedView/Components/StepsListView.swift,
+				Views/DetailedView/DetailedRecipeView.swift,
+			);
+			target = F3C2E8CD2D31C6AB00B2CE93 /* EatineraryTests */;
+		};
+		F3C2E91A2D38A93000B2CE93 /* Exceptions for "Eatinerary" folder in "EatineraryUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/RecipeData.swift,
+				Models/IngredientModel.swift,
+				Models/RecipeModel.swift,
+				Models/StepModel.swift,
+				Views/DetailedView/Components/IngredientsListView.swift,
+				Views/DetailedView/Components/StepsListView.swift,
+				Views/DetailedView/DetailedRecipeView.swift,
+			);
+			target = F3C2E8D72D31C6AB00B2CE93 /* EatineraryUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F3C2E8C02D31C6A900B2CE93 /* Eatinerary */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F3C2E9192D38A93000B2CE93 /* Exceptions for "Eatinerary" folder in "EatineraryTests" target */,
+				F3C2E91A2D38A93000B2CE93 /* Exceptions for "Eatinerary" folder in "EatineraryUITests" target */,
+			);
 			path = Eatinerary;
 			sourceTree = "<group>";
 		};

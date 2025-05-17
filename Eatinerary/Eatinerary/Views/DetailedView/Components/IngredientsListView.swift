@@ -19,14 +19,15 @@ struct IngredientListView: View {
                     // Quantity and unit in one color
                     Text("\(ingredient.quantity.formatted()) \(ingredient.unit)")
                         .foregroundColor(.blue)
+                        .fontWeight(.semibold)
                     
                     // Item name in a different color
                     Text(ingredient.item.capitalized)
                         .foregroundColor(.primary)
+                        
                 }
             }
         }
-        .padding()
     }
 }
 

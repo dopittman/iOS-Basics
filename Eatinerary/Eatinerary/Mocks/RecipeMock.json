@@ -1,10 +1,205 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
-    </dependencies>
-    <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-    </objects>
-</document>
+[
+  {
+    "Name": "Spaghetti Carbonara",
+    "PrepTime": "10 minutes",
+    "CookTime": "20 minutes",
+    "Ingredients": [
+        { "item": "spaghetti", "quantity": 200, "unit": "g"},
+        { "item": "pancetta", "quantity": 100, "unit": "g"},
+        { "item": "eggs", "quantity": 2, "unit": "large"},
+        { "item": "parmesan", "quantity": 50, "unit": "g"},
+        { "item": "garlic", "quantity": 2, "unit": "cloves"}
+    ],
+    "Steps": [
+      "Cook the spaghetti according to package instructions.",
+      "In a pan, cook pancetta until crispy.",
+      "Whisk eggs and Parmesan together in a bowl.",
+      "Combine spaghetti, pancetta, and egg mixture, stirring quickly to coat the pasta.",
+      "Season with salt and pepper and serve."
+    ],
+    "Servings": "2",
+    "Notes": "Serve immediately for best taste.",
+    "Nutrition": ["Calories: 400", "Protein: 18g", "Carbs: 50g", "Fat: 12g"],
+    "Tags": ["Italian", "Quick", "Pasta"],
+    "Effort level": "Easy",
+    "Image": "TempSpaghetti",
+    "isFavorite": true
+  },
+  {
+    "Name": "Chicken Tikka Masala",
+    "PrepTime": "15 minutes",
+    "CookTime": "45 minutes",
+    "Ingredients": [
+        { "item": "Chicken Breast", "quantity": 500, "unit": "g"},
+        { "item": "Plain Yogurt", "quantity": 1, "unit": "cup"},
+        { "item": "Garam Masala", "quantity": 2, "unit": "tbsp"},
+        { "item": "Ground Cumin", "quantity": 1, "unit": "tsp"},
+        { "item": "Onion", "quantity": 1, "unit": "whole"},
+        { "item": "Garlic", "quantity": 3, "unit": "cloves"},
+        { "item": "Diced Tomatoes", "quantity": 1, "unit": "can"},
+        { "item": "Heavy Cream", "quantity": 0.5, "unit": "cup"},
+        { "item": "Olive Oil", "quantity": 2, "unit": "tbsp"},
+        { "item": "Salt", "quantity": 1, "unit": "to taste"},
+        { "item": "Pepper", "quantity": 1, "unit": "to taste" }
+    ],
+    "Steps": [
+      "Dice and marinate chicken in yogurt and spices for 30 minutes.",
+      "Cook chicken in a skillet until browned.",
+      "Sauté onion and garlic, then add tomatoes and cream.",
+      "Simmer sauce for 15 minutes, then add chicken.",
+      "Serve with rice or naan."
+    ],
+    "Servings": "4",
+    "Notes": "Adjust spice level by adding or reducing garam masala.",
+    "Nutrition": ["Calories: 550", "Protein: 35g", "Carbs: 15g", "Fat: 35g"],
+    "Tags": ["Indian", "Spicy", "Comfort Food"],
+    "Effort level": "Medium",
+    "Image": "TempHH2",
+    "isFavorite": false
+  },
+  {
+    "Name": "Classic Pancakes",
+    "PrepTime": "10 minutes",
+    "CookTime": "20 minutes",
+    "Ingredients": [
+        { "item": "All-Purpose Flour", "quantity": 1, "unit": "cup" },
+        { "item": "Sugar", "quantity": 2, "unit": "tbsp" },
+        { "item": "Baking Powder", "quantity": 2, "unit": "tsp" },
+        { "item": "Salt", "quantity": 0.5, "unit": "tsp" },
+        { "item": "Milk", "quantity": 1, "unit": "cup" },
+        { "item": "Egg", "quantity": 1, "unit": "large" },
+        { "item": "Melted Butter", "quantity": 2, "unit": "tbsp" }
+      ],
+    "Steps": [
+      "Mix dry ingredients in a bowl.",
+      "Whisk wet ingredients in a separate bowl.",
+      "Combine wet and dry ingredients until smooth.",
+      "Cook batter on a hot griddle until bubbles form, then flip.",
+      "Serve with syrup and butter."
+    ],
+    "Servings": "4",
+    "Notes": "Double the recipe for a larger batch.",
+    "Nutrition": ["Calories: 210", "Protein: 5g", "Carbs: 30g", "Fat: 7g"],
+    "Tags": ["Breakfast", "Quick", "American"],
+    "Effort level": "Easy",
+    "Image": "TempHamburgerHelper",
+    "isFavorite": true
+  },
+  {
+    "Name": "Vegetable Stir-Fry",
+    "PrepTime": "15 minutes",
+    "CookTime": "10 minutes",
+    "Ingredients": [
+        { "item": "Broccoli Florets", "quantity": 2, "unit": "cups" },
+        { "item": "Red Bell Pepper", "quantity": 1, "unit": "whole" },
+        { "item": "Carrot", "quantity": 1, "unit": "whole" },
+        { "item": "Zucchini", "quantity": 1, "unit": "whole" },
+        { "item": "Soy Sauce", "quantity": 2, "unit": "tbsp" },
+        { "item": "Sesame Oil", "quantity": 1, "unit": "tbsp" },
+        { "item": "Ginger", "quantity": 1, "unit": "tsp" },
+        { "item": "Garlic", "quantity": 2, "unit": "cloves" }
+      ],
+    "Steps": [
+      "Heat sesame oil in a wok.",
+      "Add garlic and ginger, sauté for 1 minute.",
+      "Add vegetables and stir-fry for 5-7 minutes.",
+      "Add soy sauce and toss to combine.",
+      "Serve hot as a side or main dish."
+    ],
+    "Servings": "2",
+    "Notes": "Add tofu or chicken for extra protein.",
+    "Nutrition": ["Calories: 150", "Protein: 6g", "Carbs: 18g", "Fat: 6g"],
+    "Tags": ["Healthy", "Vegetarian", "Quick"],
+    "Effort level": "Easy",
+    "Image": "stir_fry.jpg",
+    "isFavorite": false
+  },
+  {
+    "Name": "Beef Bourguignon",
+    "PrepTime": "20 minutes",
+    "CookTime": "2 hours",
+    "Ingredients": [
+        { "item": "Beef Chuck", "quantity": 1000, "unit": "g" },
+        { "item": "Pearl Onions", "quantity": 200, "unit": "g" },
+        { "item": "Carrots", "quantity": 4, "unit": "whole" },
+        { "item": "Red Wine", "quantity": 2, "unit": "cups" },
+        { "item": "Beef Stock", "quantity": 1, "unit": "cup" },
+        { "item": "Tomato Paste", "quantity": 2, "unit": "tbsp" },
+        { "item": "Flour", "quantity": 2, "unit": "tbsp" },
+        { "item": "Bacon", "quantity": 4, "unit": "strips" },
+        { "item": "Olive Oil", "quantity": 2, "unit": "tbsp" }
+      ],
+    "Steps": [
+      "Cook bacon in a large pot until crispy.",
+      "Sear beef in bacon drippings and set aside.",
+      "Sauté onions and carrots, then add tomato paste and flour.",
+      "Deglaze pot with red wine and beef stock.",
+      "Return beef and bacon to pot, simmer for 2 hours.",
+      "Serve over mashed potatoes or noodles."
+    ],
+    "Servings": "6",
+    "Notes": "For best results, use a full-bodied red wine.",
+    "Nutrition": ["Calories: 450", "Protein: 40g", "Carbs: 12g", "Fat: 18g"],
+    "Tags": ["French", "Comfort Food", "Dinner"],
+    "Effort level": "Hard",
+    "Image": "beef_bourguignon.jpg",
+    "isFavorite": true
+  },
+  {
+    "Name": "Caprese Salad",
+    "PrepTime": "10 minutes",
+    "CookTime": "None",
+    "Ingredients": [
+        { "item": "Tomatoes", "quantity": 2, "unit": "large" },
+        { "item": "Fresh Mozzarella", "quantity": 250, "unit": "g" },
+        { "item": "Fresh Basil Leaves", "quantity": 0.25, "unit": "cup" },
+        { "item": "Balsamic Glaze", "quantity": 2, "unit": "tbsp" },
+        { "item": "Olive Oil", "quantity": 2, "unit": "tbsp" },
+        { "item": "Salt", "quantity": 1, "unit": "to taste" },
+        { "item": "Pepper", "quantity": 1, "unit": "to taste" }
+      ],
+    "Steps": [
+      "Arrange tomato and mozzarella slices alternately on a plate.",
+      "Sprinkle with fresh basil leaves.",
+      "Drizzle with olive oil and balsamic glaze.",
+      "Season with salt and pepper and serve."
+    ],
+    "Servings": "2",
+    "Notes": "Use high-quality olive oil for best flavor.",
+    "Nutrition": ["Calories: 250", "Protein: 15g", "Carbs: 5g", "Fat: 18g"],
+    "Tags": ["Italian", "Vegetarian", "Quick"],
+    "Effort level": "Easy",
+    "Image": "caprese_salad.jpg",
+    "isFavorite": false
+  },
+  {
+    "Name": "Chocolate Chip Cookies",
+    "PrepTime": "15 minutes",
+    "CookTime": "12 minutes",
+    "Ingredients": [
+        { "item": "All-Purpose Flour", "quantity": 2.25, "unit": "cups" },
+        { "item": "Baking Soda", "quantity": 1, "unit": "tsp" },
+        { "item": "Salt", "quantity": 0.5, "unit": "tsp" },
+        { "item": "Butter", "quantity": 1, "unit": "cup" },
+        { "item": "Sugar", "quantity": 0.75, "unit": "cup" },
+        { "item": "Brown Sugar", "quantity": 0.75, "unit": "cup" },
+        { "item": "Eggs", "quantity": 2, "unit": "large" },
+        { "item": "Chocolate Chips", "quantity": 2, "unit": "cups" }
+      ],
+    "Steps": [
+      "Preheat oven to 375°F (190°C).",
+      "Mix dry ingredients in a bowl.",
+      "Cream butter and sugars, then beat in eggs.",
+      "Gradually add dry ingredients to wet mixture.",
+      "Stir in chocolate chips and drop by spoonfuls onto baking sheet.",
+      "Bake for 10-12 minutes until golden brown."
+    ],
+    "Servings": "24 cookies",
+    "Notes": "Chill dough for thicker cookies.",
+    "Nutrition": ["Calories: 150", "Protein: 2g", "Carbs: 20g", "Fat: 8g"],
+    "Tags": ["Dessert", "Snack", "Baking"],
+    "Effort level": "Medium",
+    "Image": "chocolate_chip_cookies.jpg",
+    "isFavorite": true
+  }
+]

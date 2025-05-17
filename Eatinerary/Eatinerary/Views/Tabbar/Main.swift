@@ -21,13 +21,33 @@ struct MainView: View {
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
-                    Text("Search")
+                    Text("Meal Plan")
                 }
             
             ProfileView()
                 .tabItem {
                     Image(systemName: "person.crop.circle.fill")
-                    Text("Profile")
+                    Text("Shopping List")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.crop.circle.fill")
+                    Text("Browser")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.crop.circle.fill")
+                    Text("Ask AI (Beta)")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.crop.circle.fill")
+                    Text("Misc1")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.crop.circle.fill")
+                    Text("Misc2")
                 }
         }
         .onAppear{
