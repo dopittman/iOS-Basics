@@ -5,6 +5,7 @@ struct FolderView: View {
     let recipes: [Recipe]
     @ObservedObject var recipeData: RecipeData
     @State private var isExpanded = true
+    @State private var showingDeleteAlert = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -27,6 +28,13 @@ struct FolderView: View {
             .padding(.vertical, 8)
             .background(Color(.systemGray6))
             .cornerRadius(8)
+            .contextMenu {
+                Button(role: .destructive) {
+                    showingDeleteAlert = true
+                } label: {
+                    Label("Delete Folder", systemImage: "trash")
+                }
+            }
             
             // Recipes in folder
             if isExpanded {
@@ -48,6 +56,14 @@ struct FolderView: View {
             }
         }
         .padding(.horizontal)
+        .alert("Delete Folder", isPresented: $showingDeleteAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                recipeData.deleteFolder(folder)
+            }
+        } message: {
+            Text("Are you sure you want to delete this folder? The recipes will be moved to the unassigned section.")
+        }
     }
 }
 

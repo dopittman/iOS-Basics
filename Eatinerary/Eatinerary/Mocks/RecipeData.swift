@@ -49,7 +49,11 @@ class RecipeData: ObservableObject {
     }
     
     func deleteFolder(_ folder: Folder) {
+        // Remove the folder
         folders.removeAll { $0.id == folder.id }
+        
+        // Note: We don't delete the recipes themselves, they just become unassigned
+        // The recipes will automatically appear in the unassigned section
         saveFolders()
     }
     
