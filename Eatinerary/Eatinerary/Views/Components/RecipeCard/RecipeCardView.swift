@@ -22,21 +22,17 @@ struct RecipeCardView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top){
                     // Image Section
-                    if let imageName = imageName {
+                    if let imageName = imageName, imageName != "DefaultRecipeImage" {
                         Image(imageName)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80, alignment: .center)                            .cornerRadius(10)
+                            .frame(width: 80, height: 80, alignment: .center)
+                            .cornerRadius(10)
                             .clipped()
                             .padding(.trailing, 4)
-                    } else {
-                        Image(systemName: "photo.badge.plus")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 80, height: 80, alignment: .center)                            .cornerRadius(10)
-                            .clipped()
+                            .padding(.bottom, 4)
                     }
-                    
+                        
                     // Recipe Title and stats
                     VStack(alignment: .leading, spacing: 0) {
                         HStack(){
@@ -46,9 +42,9 @@ struct RecipeCardView: View {
                                 .lineLimit(2) // Restrict the text to one line
                                 .truncationMode(.tail) // Truncate at the end with an ellipsis
                                 .padding(.trailing, 40) // Add padding to avoid overlapping the heart
-
-
                         }
+                        .padding(.bottom, 4.0)
+
 
 
                         HStack(spacing: 4.0) {
