@@ -123,11 +123,6 @@ struct AddRecipeView: View {
                         HStack {
                             Text("Ingredients")
                                 .font(.headline)
-                            Spacer()
-                            Button(action: addIngredient) {
-                                Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.blue)
-                            }
                         }
                         
                         ForEach(ingredientStates.indices, id: \.self) { index in
@@ -150,6 +145,17 @@ struct AddRecipeView: View {
                                 }
                             }
                         }
+                        HStack(){
+                            Spacer()
+                            Button(action: addIngredient) {
+                                Image(systemName: "plus.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.blue)
+                            }
+                            Spacer()
+                        }
+                        .padding(.top, 4.0)
                     }
                     .padding(.horizontal)
                     
@@ -158,11 +164,6 @@ struct AddRecipeView: View {
                         HStack {
                             Text("Steps")
                                 .font(.headline)
-                            Spacer()
-                            Button(action: addStep) {
-                                Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.blue)
-                            }
                         }
                         
                         ForEach(steps.indices, id: \.self) { index in
@@ -180,6 +181,17 @@ struct AddRecipeView: View {
                                 }
                             }
                         }
+                        HStack(){
+                            Spacer()
+                            Button(action: addStep) {
+                                Image(systemName: "plus.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.blue)
+                            }
+                            Spacer()
+                        }
+                        .padding(.top, 4.0)
                     }
                     .padding(.horizontal)
                     

@@ -76,6 +76,7 @@ struct UnassignedRecipesView: View {
             Text("Unassigned Recipes")
                 .font(.headline)
                 .padding(.horizontal)
+                .padding(.bottom, 8)
             
             ForEach(recipes) { recipe in
                 NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
