@@ -15,26 +15,28 @@ struct DetailedRecipeView: View {
             VStack {
                 // Header
                 ZStack(alignment: .topLeading) {
-                    Image(previewRecipe.imageNameOrDefault)
-                        .resizable()
-                        .scaledToFit()
-                        .containerRelativeFrame(.horizontal) { size, axis in
-                            size * 0.9
-                        }
-                        .aspectRatio(contentMode: .fill)
-                        .overlay(
-                            Color.black.opacity(0.4)
-                        )
-                        .frame(height: 160)
-                        .cornerRadius(15)
-                        .clipped()
+                    if previewRecipe.imageNameOrDefault != "DefaultRecipeImage" {
+                        Image(previewRecipe.imageNameOrDefault)
+                            .resizable()
+                            .scaledToFit()
+                            .containerRelativeFrame(.horizontal) { size, axis in
+                                size * 0.9
+                            }
+                            .aspectRatio(contentMode: .fill)
+                            .overlay(
+                                Color.black.opacity(0.4)
+                            )
+                            .frame(height: 160)
+                            .cornerRadius(15)
+                            .clipped()
+                    }
                     
                     Text(previewRecipe.name)
-                        .foregroundColor(.white)
+                        .foregroundColor(previewRecipe.imageNameOrDefault == "DefaultRecipeImage" ? .black : .white)
                         .font(.title)
                         .fontWeight(.bold)
-                        .shadow(radius: 2)
-                        .padding(25)
+                        .shadow(radius: 1)
+                        .padding(15)
                 }
                 
                 HStack {
