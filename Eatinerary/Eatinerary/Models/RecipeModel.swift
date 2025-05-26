@@ -19,14 +19,20 @@ struct Recipe: Codable, Identifiable {
     let nutrition: [String]
     let tags: [String]
     let effortLevel: String
-    let image: String?
+    var image: String?  // Changed from let to var
     let isFavorite: Bool
     
-    // Nested struct for ingredients
-    struct Ingredient: Codable {
-        let item: String
-        let quantity: Double
-        let unit: String
+    // Nested class for ingredients
+    class Ingredient: Codable {
+        var item: String
+        var quantity: Double
+        var unit: String
+        
+        init(item: String, quantity: Double, unit: String) {
+            self.item = item
+            self.quantity = quantity
+            self.unit = unit
+        }
         
         enum CodingKeys: String, CodingKey {
             case item = "item"

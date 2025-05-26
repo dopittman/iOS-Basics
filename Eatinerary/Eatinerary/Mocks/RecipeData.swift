@@ -1,9 +1,13 @@
 import Foundation
+import UIKit
 
 class RecipeData: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var folders: [Folder] = []
     @Published var tags: [Tag] = []
+    
+    private let recipesKey = "savedRecipes"
+    private let imageCache = NSCache<NSString, UIImage>()
     
     init() {
         loadRecipes()
@@ -12,6 +16,14 @@ class RecipeData: ObservableObject {
     }
     
     func loadRecipes() {
+        // First try to load from UserDefaults
+        if let data = UserDefaults.standard.data(forKey: recipesKey),
+           let decodedRecipes = try? JSONDecoder().decode([Recipe].self, from: data) {
+            self.recipes = decodedRecipes
+            return
+        }
+        
+        // If no saved recipes, load from JSON file
         guard let url = Bundle.main.url(forResource: "RecipeMock", withExtension: "json") else {
             print("Failed to locate JSON file.")
             return
@@ -22,8 +34,15 @@ class RecipeData: ObservableObject {
             let decoder = JSONDecoder()
             let decodedRecipes = try decoder.decode([Recipe].self, from: data)
             self.recipes = decodedRecipes
+            saveRecipes() // Save the loaded recipes to UserDefaults
         } catch {
             print("Error decoding JSON: \(error)")
+        }
+    }
+    
+    func saveRecipes() {
+        if let encoded = try? JSONEncoder().encode(recipes) {
+            UserDefaults.standard.set(encoded, forKey: recipesKey)
         }
     }
     
@@ -133,5 +152,51 @@ class RecipeData: ObservableObject {
     func removeTag(_ tag: Tag) {
         tags.removeAll { $0.id == tag.id }
         saveTags()
+    }
+    
+    func addRecipe(_ recipe: Recipe, image: UIImage?) {
+        var newRecipe = recipe
+        
+        // Save image if provided
+        if let image = image {
+            let imageName = "\(recipe.id).jpg"
+            saveImage(image, withName: imageName)
+            newRecipe.image = imageName
+        }
+        
+        recipes.append(newRecipe)
+        saveRecipes()
+    }
+    
+    private func saveImage(_ image: UIImage, withName name: String) {
+        // Save to cache
+        imageCache.setObject(image, forKey: name as NSString)
+        
+        // Save to documents directory
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsDirectory.appendingPathComponent(name)
+        
+        try? data.write(to: fileURL)
+    }
+    
+    func loadImage(named name: String) -> UIImage? {
+        // Check cache first
+        if let cachedImage = imageCache.object(forKey: name as NSString) {
+            return cachedImage
+        }
+        
+        // Load from documents directory
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsDirectory.appendingPathComponent(name)
+        
+        guard let data = try? Data(contentsOf: fileURL),
+              let image = UIImage(data: data) else {
+            return nil
+        }
+        
+        // Save to cache
+        imageCache.setObject(image, forKey: name as NSString)
+        return image
     }
 }

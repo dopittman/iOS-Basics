@@ -3,6 +3,7 @@ import SwiftUI
 struct RecipesView: View {
     @StateObject private var recipeData = RecipeData()
     @State private var showingNewFolderSheet = false
+    @State private var showingNewRecipeSheet = false
     @State private var newFolderName = ""
     @State private var searchText = ""
     @State private var selectedTag: Tag?
@@ -74,8 +75,13 @@ struct RecipesView: View {
             .navigationTitle("Recipes")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingNewFolderSheet = true }) {
-                        Image(systemName: "folder.badge.plus")
+                    HStack {
+                        Button(action: { showingNewRecipeSheet = true }) {
+                            Image(systemName: "plus")
+                        }
+                        Button(action: { showingNewFolderSheet = true }) {
+                            Image(systemName: "folder.badge.plus")
+                        }
                     }
                 }
             }
@@ -99,6 +105,9 @@ struct RecipesView: View {
                         }
                     )
                 }
+            }
+            .sheet(isPresented: $showingNewRecipeSheet) {
+                AddRecipeView(recipeData: recipeData)
             }
         }
         .onAppear {

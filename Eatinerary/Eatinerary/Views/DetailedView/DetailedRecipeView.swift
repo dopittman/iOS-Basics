@@ -17,16 +17,17 @@ struct DetailedRecipeView: View {
                 ZStack(alignment: .topLeading) {
                     Image(previewRecipe.imageNameOrDefault)
                         .resizable()
+                        .scaledToFit()
+                        .containerRelativeFrame(.horizontal) { size, axis in
+                            size * 0.9
+                        }
                         .aspectRatio(contentMode: .fill)
                         .overlay(
                             Color.black.opacity(0.4)
                         )
                         .frame(height: 160)
                         .cornerRadius(15)
-                        .frame(maxWidth: .infinity)
                         .clipped()
-                        .padding(.horizontal)
-                        .padding(.top)
                     
                     Text(previewRecipe.name)
                         .foregroundColor(.white)
