@@ -1,0 +1,81 @@
+import SwiftUI
+
+struct FolderView: View {
+    let folder: Folder
+    let recipes: [Recipe]
+    @ObservedObject var recipeData: RecipeData
+    @State private var isExpanded = true
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Folder Header
+            HStack {
+                Image(systemName: isExpanded ? "folder.fill" : "folder")
+                    .foregroundColor(.blue)
+                Text(folder.name)
+                    .font(.headline)
+                Spacer()
+                Text("\(recipes.count) recipes")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                Button(action: { isExpanded.toggle() }) {
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                        .foregroundColor(.gray)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            
+            // Recipes in folder
+            if isExpanded {
+                ForEach(recipes) { recipe in
+                    NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                        RecipeCardView(
+                            imageName: recipe.imageNameOrDefault,
+                            recipeName: recipe.name,
+                            timeText: recipe.cookTime,
+                            difficultyText: recipe.effortLevel,
+                            isFavorite: recipe.isFavorite
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .onDrag {
+                        NSItemProvider(object: recipe.id.uuidString as NSString)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct UnassignedRecipesView: View {
+    let recipes: [Recipe]
+    @ObservedObject var recipeData: RecipeData
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Unassigned Recipes")
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ForEach(recipes) { recipe in
+                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                    RecipeCardView(
+                        imageName: recipe.imageNameOrDefault,
+                        recipeName: recipe.name,
+                        timeText: recipe.cookTime,
+                        difficultyText: recipe.effortLevel,
+                        isFavorite: recipe.isFavorite
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .onDrag {
+                    NSItemProvider(object: recipe.id.uuidString as NSString)
+                }
+            }
+        }
+    }
+}
