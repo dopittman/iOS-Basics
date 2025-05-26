@@ -4,28 +4,72 @@ struct RecipesView: View {
     @StateObject private var recipeData = RecipeData()
     @State private var showingNewFolderSheet = false
     @State private var newFolderName = ""
+    @State private var searchText = ""
+    @State private var selectedTag: Tag?
+    
+    var filteredRecipes: [Recipe] {
+        recipeData.searchRecipes(query: searchText, selectedTag: selectedTag)
+    }
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    // Folders Section
-                    ForEach(recipeData.folders) { folder in
-                        FolderView(
-                            folder: folder,
-                            recipes: recipeData.getRecipesInFolder(folder),
-                            recipeData: recipeData
-                        )
-                        .onDrop(of: [.text], delegate: FolderDropDelegate(folder: folder, recipeData: recipeData))
+            VStack(spacing: 0) {
+                // Search Bar
+                SearchBarView(
+                    searchText: $searchText,
+                    selectedTag: $selectedTag,
+                    allTags: recipeData.tags,
+                    onTagSelected: { _ in }
+                )
+                .padding(.vertical, 8)
+                
+                // Content
+                ScrollView {
+                    if searchText.isEmpty && selectedTag == nil {
+                        // Normal folder view
+                        VStack(alignment: .leading, spacing: 16) {
+                            // Folders Section
+                            ForEach(recipeData.folders) { folder in
+                                FolderView(
+                                    folder: folder,
+                                    recipes: recipeData.getRecipesInFolder(folder),
+                                    recipeData: recipeData
+                                )
+                                .onDrop(of: [.text], delegate: FolderDropDelegate(folder: folder, recipeData: recipeData))
+                            }
+                            
+                            // Unassigned Recipes Section
+                            UnassignedRecipesView(
+                                recipes: recipeData.getUnassignedRecipes(),
+                                recipeData: recipeData
+                            )
+                        }
+                        .padding(.vertical)
+                    } else {
+                        // Search results
+                        VStack(alignment: .leading, spacing: 16) {
+                            if let selectedTag = selectedTag {
+                                Text("Showing results for tag: \(selectedTag.name)")
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                            }
+                            
+                            ForEach(filteredRecipes) { recipe in
+                                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                                    RecipeCardView(
+                                        imageName: recipe.imageNameOrDefault,
+                                        recipeName: recipe.name,
+                                        timeText: recipe.cookTime,
+                                        difficultyText: recipe.effortLevel,
+                                        isFavorite: recipe.isFavorite
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                        .padding(.vertical)
                     }
-                    
-                    // Unassigned Recipes Section
-                    UnassignedRecipesView(
-                        recipes: recipeData.getUnassignedRecipes(),
-                        recipeData: recipeData
-                    )
                 }
-                .padding(.vertical)
             }
             .navigationTitle("Recipes")
             .toolbar {

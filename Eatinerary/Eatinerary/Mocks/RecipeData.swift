@@ -3,10 +3,12 @@ import Foundation
 class RecipeData: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var folders: [Folder] = []
+    @Published var tags: [Tag] = []
     
     init() {
         loadRecipes()
         loadFolders()
+        loadTags()
     }
     
     func loadRecipes() {
@@ -36,9 +38,26 @@ class RecipeData: ObservableObject {
         }
     }
     
+    func loadTags() {
+        // Load tags from UserDefaults or create default tags
+        if let data = UserDefaults.standard.data(forKey: "tags"),
+           let decodedTags = try? JSONDecoder().decode([Tag].self, from: data) {
+            self.tags = decodedTags
+        } else {
+            self.tags = Tag.sampleTags
+            saveTags()
+        }
+    }
+    
     func saveFolders() {
         if let encoded = try? JSONEncoder().encode(folders) {
             UserDefaults.standard.set(encoded, forKey: "folders")
+        }
+    }
+    
+    func saveTags() {
+        if let encoded = try? JSONEncoder().encode(tags) {
+            UserDefaults.standard.set(encoded, forKey: "tags")
         }
     }
     
@@ -80,5 +99,39 @@ class RecipeData: ObservableObject {
     func getUnassignedRecipes() -> [Recipe] {
         let allAssignedRecipeIds = Set(folders.flatMap { $0.recipes })
         return recipes.filter { !allAssignedRecipeIds.contains($0.id) }
+    }
+    
+    // Search functionality
+    func searchRecipes(query: String, selectedTag: Tag?) -> [Recipe] {
+        var filteredRecipes = recipes
+        
+        // Filter by tag if selected
+        if let tag = selectedTag {
+            filteredRecipes = filteredRecipes.filter { recipe in
+                recipe.tags.contains(tag.name)
+            }
+        }
+        
+        // Filter by search query if not empty
+        if !query.isEmpty {
+            filteredRecipes = filteredRecipes.filter { recipe in
+                recipe.name.lowercased().contains(query.lowercased())
+            }
+        }
+        
+        return filteredRecipes
+    }
+    
+    // Tag management
+    func addTag(_ tag: Tag) {
+        if !tags.contains(where: { $0.name == tag.name }) {
+            tags.append(tag)
+            saveTags()
+        }
+    }
+    
+    func removeTag(_ tag: Tag) {
+        tags.removeAll { $0.id == tag.id }
+        saveTags()
     }
 }
