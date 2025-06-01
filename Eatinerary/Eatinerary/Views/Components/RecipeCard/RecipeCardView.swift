@@ -21,116 +21,94 @@ struct RecipeCardView: View {
     @State private var ratingState: Int = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .top, spacing: 12) {
                 // Image Section
                 if let imageName = imageName, imageName != "DefaultRecipeImage" {
                     if let loadedUIImage = loadedUIImage {
                         Image(uiImage: loadedUIImage)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80, alignment: .center)
-                            .cornerRadius(10)
-                            .clipped()
-                            .padding(.trailing, 4)
-                            .padding(.bottom, 4)
+                            .aspectRatio(1, contentMode: .fill)
+                            .frame(width: 64, height: 64)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 2)
                     } else if imageName.hasSuffix(".jpg") {
-                        // User image not found, show default
                         Image("DefaultRecipeImage")
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80, alignment: .center)
-                            .cornerRadius(10)
-                            .clipped()
-                            .padding(.trailing, 4)
-                            .padding(.bottom, 4)
+                            .aspectRatio(1, contentMode: .fill)
+                            .frame(width: 64, height: 64)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 2)
                     } else {
-                        // Asset image fallback
                         Image(imageName)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80, alignment: .center)
-                            .cornerRadius(10)
-                            .clipped()
-                            .padding(.trailing, 4)
-                            .padding(.bottom, 4)
+                            .aspectRatio(1, contentMode: .fill)
+                            .frame(width: 64, height: 64)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 2)
                     }
                 }
-                    
-                // Recipe Title and stats
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(){
+                // Main Info
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(alignment: .top) {
                         Text(recipeName)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(2) // Restrict the text to one line
-                            .truncationMode(.tail) // Truncate at the end with an ellipsis
-                            .padding(.trailing, 40) // Add padding to avoid overlapping the heart
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .foregroundColor(.primary)
+                            .lineLimit(2)
+                            .truncationMode(.tail)
+                        Spacer()
+                        if isFavorite {
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(Color(hue: 0.045, saturation: 0.763, brightness: 0.935))
+                                .font(.system(size: 18, weight: .bold))
+                                .padding(.top, 2)
+                        }
                     }
-                    .padding(.bottom, 4.0)
-
-
-
-                    HStack(spacing: 4.0) {
-                        
-                        // Time Section
-                        Image(systemName: "clock.fill")
-                        Text(timeText)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                        
-                        Text("|")
-                        
-                        // Difficulty Section
-                        HStack( spacing: 4.0){
-                            Image(systemName: "bolt.fill")
-                            ShowDifficultyRating(rating: .constant(difficultyRating ?? 0)) // Default to 0 if nil
-
+                    HStack(spacing: 10) {
+                        Label(timeText, systemImage: "clock")
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .foregroundColor(.secondary)
+                        Divider().frame(height: 16)
+                        Label(difficultyText, systemImage: "bolt.fill")
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .foregroundColor(.secondary)
+                        if let rating = difficultyRating, rating > 0 {
+                            ShowDifficultyRating(rating: .constant(rating))
                         }
                     }
                 }
-   
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .overlay(
-                // Conditionally show the heart icon
-                Group {
-                    if isFavorite {
-                        Image(systemName: "heart.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .foregroundColor(Color(hue: 0.045, saturation: 0.763, brightness: 0.935))
-                            .frame(width: 20.0, height: 20.0)
-                    }
-                },
-                alignment: .topTrailing // Position at the top right
-            )
-            // Tag chips row (always visible if tags exist, and not inside HStack)
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+            // Tag chips row
             if !tags.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image(systemName: "tag.fill")
+                    HStack(spacing: 6) {
                         ForEach(tags, id: \.self) { tag in
                             Text(tag)
-                                .fontWeight(.medium)
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 12)
-                                .foregroundStyle(.black)
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 10)
                                 .background(
                                     Capsule()
-                                        .fill(Color("GreenAccent"))
+                                        .fill(Color("GreenAccent").opacity(0.18))
                                 )
+                                .foregroundColor(Color("GreenAccent"))
                         }
                     }
-                    .padding(.top, 4)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
                 }
+                .transition(.opacity)
             }
         }
-        .padding()
-        .background(Color("CardBackground"))
-        .cornerRadius(15)
-        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 4)
-        .padding([.horizontal, .bottom])
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color("CardBackground"))
+                .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
+        )
+        .padding(.vertical, 6)
+        .padding(.horizontal, 4)
         .onAppear {
             if let imageName = imageName, imageName != "DefaultRecipeImage", let recipeData = recipeData {
                 if let uiImage = recipeData.loadImage(named: imageName) {
