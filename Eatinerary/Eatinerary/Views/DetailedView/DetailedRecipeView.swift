@@ -9,6 +9,9 @@ import SwiftUI
 
 struct DetailedRecipeView: View {
     let previewRecipe: Recipe
+    @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject var recipeData: RecipeData
+    @State private var showingDeleteAlert = false
 
     var body: some View {
         ScrollView {
@@ -104,7 +107,7 @@ struct DetailedRecipeView: View {
                     HStack {
                         Text("Steps")
                             .fontWeight(.bold)
-                        Spacer()
+                         Spacer()
                     }
                     .padding(.bottom, 4)
                     .padding(.top, 12)
@@ -116,6 +119,24 @@ struct DetailedRecipeView: View {
             }
         }
         .background(Color.appBackground)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(role: .destructive) {
+                    showingDeleteAlert = true
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
+        .alert("Delete Recipe", isPresented: $showingDeleteAlert) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                recipeData.deleteRecipe(previewRecipe)
+                presentationMode.wrappedValue.dismiss()
+            }
+        } message: {
+            Text("Are you sure you want to delete this recipe? This action cannot be undone.")
+        }
     }
 }
 

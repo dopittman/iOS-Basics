@@ -39,7 +39,7 @@ struct FolderView: View {
             // Recipes in folder
             if isExpanded {
                 ForEach(recipes) { recipe in
-                    NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                    NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe).environmentObject(recipeData)) {
                         RecipeCardView(
                             imageName: recipe.imageNameOrDefault,
                             recipeName: recipe.name,
@@ -79,7 +79,7 @@ struct UnassignedRecipesView: View {
                 .padding(.bottom, 8)
             
             ForEach(recipes) { recipe in
-                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe).environmentObject(recipeData)) {
                     RecipeCardView(
                         imageName: recipe.imageNameOrDefault,
                         recipeName: recipe.name,

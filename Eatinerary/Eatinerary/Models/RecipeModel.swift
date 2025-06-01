@@ -92,19 +92,21 @@ struct Recipe: Codable, Identifiable {
     // Custom decoder initializer to handle JSON decoding
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         id = UUID()
         name = try container.decode(String.self, forKey: .name)
         prepTime = try container.decode(String.self, forKey: .prepTime)
         cookTime = try container.decode(String.self, forKey: .cookTime)
         ingredients = try container.decode([Ingredient].self, forKey: .ingredients)
-        
-        // Convert string array to Step array during decoding
-        let stepStrings = try container.decode([String].self, forKey: .steps)
-        steps = stepStrings.enumerated().map { index, instruction in
-            Step(number: index + 1, instruction: instruction)
+        // Flexible decoding for steps: try [Step] first, then fallback to [String]
+        if let stepsArray = try? container.decode([Step].self, forKey: .steps) {
+            steps = stepsArray
+        } else if let stepStrings = try? container.decode([String].self, forKey: .steps) {
+            steps = stepStrings.enumerated().map { index, instruction in
+                Step(number: index + 1, instruction: instruction)
+            }
+        } else {
+            steps = []
         }
-        
         servings = try container.decode(String.self, forKey: .servings)
         notes = try container.decode(String.self, forKey: .notes)
         nutrition = try container.decode([String].self, forKey: .nutrition)

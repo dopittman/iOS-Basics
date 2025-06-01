@@ -16,6 +16,12 @@ class RecipeData: ObservableObject {
     }
     
     func loadRecipes() {
+        // Try to load from disk first
+        if let diskRecipes = loadRecipesFromDisk() {
+            self.recipes = diskRecipes
+            return
+        }
+        
         // First try to load from UserDefaults
         if let data = UserDefaults.standard.data(forKey: recipesKey),
            let decodedRecipes = try? JSONDecoder().decode([Recipe].self, from: data) {
@@ -43,6 +49,38 @@ class RecipeData: ObservableObject {
     func saveRecipes() {
         if let encoded = try? JSONEncoder().encode(recipes) {
             UserDefaults.standard.set(encoded, forKey: recipesKey)
+        }
+        saveRecipesToDisk()
+    }
+    
+    // Save recipes to device storage (Documents directory)
+    private func saveRecipesToDisk() {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentsURL = urls.first else { return }
+        let fileURL = documentsURL.appendingPathComponent("recipes.json")
+        do {
+            let data = try JSONEncoder().encode(recipes)
+            try data.write(to: fileURL)
+        } catch {
+            print("Failed to save recipes to disk: \(error)")
+        }
+    }
+
+    // Load recipes from device storage (Documents directory)
+    private func loadRecipesFromDisk() -> [Recipe]? {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentsURL = urls.first else { return nil }
+        let fileURL = documentsURL.appendingPathComponent("recipes.json")
+        guard fileManager.fileExists(atPath: fileURL.path) else { return nil }
+        do {
+            let data = try Data(contentsOf: fileURL)
+            let decoded = try JSONDecoder().decode([Recipe].self, from: data)
+            return decoded
+        } catch {
+            print("Failed to load recipes from disk: \(error)")
+            return nil
         }
     }
     
@@ -165,7 +203,7 @@ class RecipeData: ObservableObject {
         }
         
         recipes.append(newRecipe)
-        saveRecipes()
+        saveRecipes() // This will save to disk as well
     }
     
     private func saveImage(_ image: UIImage, withName name: String) {
@@ -198,5 +236,16 @@ class RecipeData: ObservableObject {
         // Save to cache
         imageCache.setObject(image, forKey: name as NSString)
         return image
+    }
+    
+    func deleteRecipe(_ recipe: Recipe) {
+        // Remove from recipes array
+        recipes.removeAll { $0.id == recipe.id }
+        // Remove from all folders
+        for i in 0..<folders.count {
+            folders[i].recipes.removeAll { $0 == recipe.id }
+        }
+        saveRecipes()
+        saveFolders()
     }
 }

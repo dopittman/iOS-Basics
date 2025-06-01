@@ -56,7 +56,7 @@ struct RecipesView: View {
                             }
                             
                             ForEach(filteredRecipes) { recipe in
-                                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe)) {
+                                NavigationLink(destination: DetailedRecipeView(previewRecipe: recipe).environmentObject(recipeData)) {
                                     RecipeCardView(
                                         imageName: recipe.imageNameOrDefault,
                                         recipeName: recipe.name,
