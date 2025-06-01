@@ -17,7 +17,7 @@ struct Recipe: Codable, Identifiable {
     let servings: String
     let notes: String
     let nutrition: [String]
-    let tags: [String]
+    var tags: [String]
     let effortLevel: String
     var image: String?  // Changed from let to var
     let isFavorite: Bool
