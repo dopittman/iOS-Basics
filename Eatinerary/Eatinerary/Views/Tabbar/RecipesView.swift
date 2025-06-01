@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RecipesView: View {
-    @StateObject private var recipeData = RecipeData()
+    @EnvironmentObject var recipeData: RecipeData
     @State private var showingNewFolderSheet = false
     @State private var showingNewRecipeSheet = false
     @State private var newFolderName = ""
@@ -110,9 +110,6 @@ struct RecipesView: View {
                 AddRecipeView(recipeData: recipeData)
             }
         }
-        .onAppear {
-            recipeData.loadRecipes()
-        }
     }
 }
 
@@ -146,4 +143,5 @@ struct FolderDropDelegate: DropDelegate {
 
 #Preview {
     RecipesView()
+        .environmentObject(RecipeData())
 }

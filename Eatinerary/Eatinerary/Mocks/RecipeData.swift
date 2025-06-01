@@ -85,6 +85,12 @@ class RecipeData: ObservableObject {
     }
     
     func loadFolders() {
+        // Try to load from disk first
+        if let diskFolders = loadFoldersFromDisk() {
+            self.folders = diskFolders
+            return
+        }
+        
         // Load folders from UserDefaults or create default folders
         if let data = UserDefaults.standard.data(forKey: "folders"),
            let decodedFolders = try? JSONDecoder().decode([Folder].self, from: data) {
@@ -110,6 +116,7 @@ class RecipeData: ObservableObject {
         if let encoded = try? JSONEncoder().encode(folders) {
             UserDefaults.standard.set(encoded, forKey: "folders")
         }
+        saveFoldersToDisk() // Ensure folders are always saved to disk
     }
     
     func saveTags() {
@@ -138,13 +145,44 @@ class RecipeData: ObservableObject {
         for i in 0..<folders.count {
             folders[i].recipes.removeAll { $0 == recipe.id }
         }
-        
         // Add recipe to the target folder
         if let index = folders.firstIndex(where: { $0.id == folder.id }) {
             folders[index].recipes.append(recipe.id)
         }
-        
-        saveFolders()
+        folders = folders // Trigger SwiftUI update
+        saveFolders() // Save folder changes to UserDefaults
+        // saveFoldersToDisk() is already called in saveFolders()
+    }
+    
+    // Save folders to device storage (Documents directory)
+    private func saveFoldersToDisk() {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentsURL = urls.first else { return }
+        let fileURL = documentsURL.appendingPathComponent("folders.json")
+        do {
+            let data = try JSONEncoder().encode(folders)
+            try data.write(to: fileURL)
+        } catch {
+            print("Failed to save folders to disk: \(error)")
+        }
+    }
+
+    // Load folders from device storage (Documents directory)
+    private func loadFoldersFromDisk() -> [Folder]? {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentsURL = urls.first else { return nil }
+        let fileURL = documentsURL.appendingPathComponent("folders.json")
+        guard fileManager.fileExists(atPath: fileURL.path) else { return nil }
+        do {
+            let data = try Data(contentsOf: fileURL)
+            let decoded = try JSONDecoder().decode([Folder].self, from: data)
+            return decoded
+        } catch {
+            print("Failed to load folders from disk: \(error)")
+            return nil
+        }
     }
     
     func getRecipesInFolder(_ folder: Folder) -> [Recipe] {
