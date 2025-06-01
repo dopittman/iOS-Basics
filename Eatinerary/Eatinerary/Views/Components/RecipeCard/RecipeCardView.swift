@@ -14,7 +14,9 @@ struct RecipeCardView: View {
     var difficultyText: String
     var isFavorite: Bool
     var difficultyRating: Int?
+    var recipeData: RecipeData? = nil // Optional, for loading user images
 
+    @State private var loadedUIImage: UIImage? = nil
     @State private var ratingState: Int = 0
 
     var body: some View {
@@ -23,14 +25,36 @@ struct RecipeCardView: View {
                 HStack(alignment: .top){
                     // Image Section
                     if let imageName = imageName, imageName != "DefaultRecipeImage" {
-                        Image(imageName)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80, alignment: .center)
-                            .cornerRadius(10)
-                            .clipped()
-                            .padding(.trailing, 4)
-                            .padding(.bottom, 4)
+                        if let loadedUIImage = loadedUIImage {
+                            Image(uiImage: loadedUIImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80, alignment: .center)
+                                .cornerRadius(10)
+                                .clipped()
+                                .padding(.trailing, 4)
+                                .padding(.bottom, 4)
+                        } else if imageName.hasSuffix(".jpg") {
+                            // User image not found, show default
+                            Image("DefaultRecipeImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80, alignment: .center)
+                                .cornerRadius(10)
+                                .clipped()
+                                .padding(.trailing, 4)
+                                .padding(.bottom, 4)
+                        } else {
+                            // Asset image fallback
+                            Image(imageName)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80, alignment: .center)
+                                .cornerRadius(10)
+                                .clipped()
+                                .padding(.trailing, 4)
+                                .padding(.bottom, 4)
+                        }
                     }
                         
                     // Recipe Title and stats
@@ -128,6 +152,13 @@ struct RecipeCardView: View {
         .cornerRadius(15)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 4)
         .padding([.horizontal, .bottom])
+        .onAppear {
+            if let imageName = imageName, imageName != "DefaultRecipeImage", let recipeData = recipeData {
+                if let uiImage = recipeData.loadImage(named: imageName) {
+                    loadedUIImage = uiImage
+                }
+            }
+        }
     }
 }
 

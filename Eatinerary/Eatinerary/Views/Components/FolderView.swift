@@ -45,7 +45,8 @@ struct FolderView: View {
                             recipeName: recipe.name,
                             timeText: recipe.cookTime,
                             difficultyText: recipe.effortLevel,
-                            isFavorite: recipe.isFavorite
+                            isFavorite: recipe.isFavorite,
+                            recipeData: recipeData // Pass for user images
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -85,7 +86,8 @@ struct UnassignedRecipesView: View {
                         recipeName: recipe.name,
                         timeText: recipe.cookTime,
                         difficultyText: recipe.effortLevel,
-                        isFavorite: recipe.isFavorite
+                        isFavorite: recipe.isFavorite,
+                        recipeData: recipeData // Pass for user images
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
