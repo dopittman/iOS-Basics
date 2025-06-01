@@ -12,26 +12,58 @@ struct DetailedRecipeView: View {
     @Environment(\.presentationMode) private var presentationMode
     @EnvironmentObject var recipeData: RecipeData
     @State private var showingDeleteAlert = false
+    @State private var loadedUIImage: UIImage? = nil
 
     var body: some View {
         ScrollView {
             VStack {
                 // Header
                 ZStack(alignment: .topLeading) {
-                    if previewRecipe.imageNameOrDefault != "DefaultRecipeImage" {
-                        Image(previewRecipe.imageNameOrDefault)
-                            .resizable()
-                            .scaledToFit()
-                            .containerRelativeFrame(.horizontal) { size, axis in
-                                size * 0.9
-                            }
-                            .aspectRatio(contentMode: .fill)
-                            .overlay(
-                                Color.black.opacity(0.4)
-                            )
-                            .frame(height: 160)
-                            .cornerRadius(15)
-                            .clipped()
+                    let imageName = previewRecipe.imageNameOrDefault
+                    if imageName != "DefaultRecipeImage" {
+                        if let loadedUIImage = loadedUIImage {
+                            Image(uiImage: loadedUIImage)
+                                .resizable()
+                                .scaledToFit()
+                                .containerRelativeFrame(.horizontal) { size, axis in
+                                    size * 0.9
+                                }
+                                .aspectRatio(contentMode: .fill)
+                                .overlay(
+                                    Color.black.opacity(0.4)
+                                )
+                                .frame(height: 160)
+                                .cornerRadius(15)
+                                .clipped()
+                        } else if imageName.hasSuffix(".jpg") {
+                            Image("DefaultRecipeImage")
+                                .resizable()
+                                .scaledToFit()
+                                .containerRelativeFrame(.horizontal) { size, axis in
+                                    size * 0.9
+                                }
+                                .aspectRatio(contentMode: .fill)
+                                .overlay(
+                                    Color.black.opacity(0.4)
+                                )
+                                .frame(height: 160)
+                                .cornerRadius(15)
+                                .clipped()
+                        } else {
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .containerRelativeFrame(.horizontal) { size, axis in
+                                    size * 0.9
+                                }
+                                .aspectRatio(contentMode: .fill)
+                                .overlay(
+                                    Color.black.opacity(0.4)
+                                )
+                                .frame(height: 160)
+                                .cornerRadius(15)
+                                .clipped()
+                        }
                     }
                     
                     Text(previewRecipe.name)
@@ -136,6 +168,14 @@ struct DetailedRecipeView: View {
             }
         } message: {
             Text("Are you sure you want to delete this recipe? This action cannot be undone.")
+        }
+        .onAppear {
+            let imageName = previewRecipe.imageNameOrDefault
+            if imageName != "DefaultRecipeImage" && imageName.hasSuffix(".jpg") {
+                if let uiImage = recipeData.loadImage(named: imageName) {
+                    loadedUIImage = uiImage
+                }
+            }
         }
     }
 }
