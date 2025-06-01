@@ -46,6 +46,7 @@ struct FolderView: View {
                             timeText: recipe.cookTime,
                             difficultyText: recipe.effortLevel,
                             isFavorite: recipe.isFavorite,
+                            tags: recipe.tags, // <-- pass tags
                             recipeData: recipeData // Pass for user images
                         )
                     }
@@ -87,6 +88,7 @@ struct UnassignedRecipesView: View {
                         timeText: recipe.cookTime,
                         difficultyText: recipe.effortLevel,
                         isFavorite: recipe.isFavorite,
+                        tags: recipe.tags, // <-- pass tags
                         recipeData: recipeData // Pass for user images
                     )
                 }
