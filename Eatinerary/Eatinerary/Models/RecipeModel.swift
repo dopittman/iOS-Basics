@@ -8,7 +8,7 @@
 import Foundation
 
 struct Recipe: Codable, Identifiable {
-    var id: UUID = UUID()
+    var id: UUID // Remove default value, must be decoded
     let name: String
     let prepTime: String
     let cookTime: String
@@ -43,6 +43,7 @@ struct Recipe: Codable, Identifiable {
     
     // Custom coding keys to match JSON structure
     enum CodingKeys: String, CodingKey {
+        case id // Add id to coding keys
         case name = "Name"
         case prepTime = "PrepTime"
         case cookTime = "CookTime"
@@ -71,7 +72,6 @@ struct Recipe: Codable, Identifiable {
          effortLevel: String,
          image: String?,
          isFavorite: Bool) {
-        
         self.id = id
         self.name = name
         self.prepTime = prepTime
@@ -92,7 +92,8 @@ struct Recipe: Codable, Identifiable {
     // Custom decoder initializer to handle JSON decoding
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = UUID()
+        // Try to decode id, fallback to new UUID if not present
+        id = (try? container.decode(UUID.self, forKey: .id)) ?? UUID()
         name = try container.decode(String.self, forKey: .name)
         prepTime = try container.decode(String.self, forKey: .prepTime)
         cookTime = try container.decode(String.self, forKey: .cookTime)

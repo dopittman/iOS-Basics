@@ -10,8 +10,8 @@ class RecipeData: ObservableObject {
     private let imageCache = NSCache<NSString, UIImage>()
     
     init() {
-        loadRecipes()
         loadFolders()
+        loadRecipes()
         loadTags()
     }
     
@@ -19,31 +19,25 @@ class RecipeData: ObservableObject {
         // Try to load from disk first
         if let diskRecipes = loadRecipesFromDisk() {
             self.recipes = diskRecipes
+            self.recipes = self.recipes // Force UI update
+            print("Loaded recipes: \(recipes.map { $0.id })")
             return
         }
-        
-        // First try to load from UserDefaults
+
+        // Try to load from UserDefaults
         if let data = UserDefaults.standard.data(forKey: recipesKey),
            let decodedRecipes = try? JSONDecoder().decode([Recipe].self, from: data) {
             self.recipes = decodedRecipes
+            self.recipes = self.recipes // Force UI update
+            print("Loaded recipes: \(recipes.map { $0.id })")
             return
         }
-        
-        // If no saved recipes, load from JSON file
-        guard let url = Bundle.main.url(forResource: "RecipeMock", withExtension: "json") else {
-            print("Failed to locate JSON file.")
-            return
-        }
-        
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            let decodedRecipes = try decoder.decode([Recipe].self, from: data)
-            self.recipes = decodedRecipes
-            saveRecipes() // Save the loaded recipes to UserDefaults
-        } catch {
-            print("Error decoding JSON: \(error)")
-        }
+
+        // No recipes found, start with an empty array (do not load mock data)
+        self.recipes = []
+        self.recipes = self.recipes // Force UI update
+        saveRecipes() // Save the empty state to disk
+        print("Loaded recipes: []")
     }
     
     func saveRecipes() {
@@ -88,6 +82,11 @@ class RecipeData: ObservableObject {
         // Try to load from disk first
         if let diskFolders = loadFoldersFromDisk() {
             self.folders = diskFolders
+            self.folders = self.folders // Force UI update
+            print("Loaded folders: \(folders)")
+            for folder in folders {
+                print("Folder \(folder.name) contains: \(folder.recipes)")
+            }
             return
         }
         
@@ -95,9 +94,19 @@ class RecipeData: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: "folders"),
            let decodedFolders = try? JSONDecoder().decode([Folder].self, from: data) {
             self.folders = decodedFolders
+            self.folders = self.folders // Force UI update
+            print("Loaded folders: \(folders)")
+            for folder in folders {
+                print("Folder \(folder.name) contains: \(folder.recipes)")
+            }
         } else {
             self.folders = Folder.sampleFolders
+            self.folders = self.folders // Force UI update
             saveFolders()
+            print("Loaded folders: \(folders)")
+            for folder in folders {
+                print("Folder \(folder.name) contains: \(folder.recipes)")
+            }
         }
     }
     
@@ -150,8 +159,8 @@ class RecipeData: ObservableObject {
             folders[index].recipes.append(recipe.id)
         }
         folders = folders // Trigger SwiftUI update
-        saveFolders() // Save folder changes to UserDefaults
-        // saveFoldersToDisk() is already called in saveFolders()
+        saveFolders() // Save folder changes to UserDefaults and disk
+        saveRecipes() // Also save recipes to disk to ensure consistency
     }
     
     // Save folders to device storage (Documents directory)
